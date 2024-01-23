@@ -2,7 +2,7 @@ import requests
 import modules.data_base as m_data
 import time
 # import json
-api_key = "336633f9d31fd19a2d94570ca76d354f"
+api_key = "6e8d75051d7d7e2e2687d40ab7a5f132"
 
 def temp(kelvin:float):
     return str(int(kelvin-273.15))
@@ -115,10 +115,10 @@ def text(data):
     else:
         text = "Хмарно"
     return text
-def get_api(city_name = None):
+def get_api(city_name = None,add=""):
     if city_name == None:
         city_name = m_data.city
-    url_api = f"https://api.openweathermap.org/data/2.5/weather?q={city_name}&appid={api_key}"
+    url_api = f"https://api.openweathermap.org/data/2.5/weather?q={city_name}&appid={api_key}"+add
     response = requests.get(url = url_api)
     if response.status_code == 200:
         data = response.json()

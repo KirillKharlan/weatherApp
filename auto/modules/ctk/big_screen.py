@@ -8,6 +8,7 @@ import os
 import modules.ctk.registration as ct_reg
 import time
 import modules.api as m_api
+import threading
 # print(time.)
 
 def revision(city_name, text,y,text_1,color= "#096C82"):
@@ -15,6 +16,12 @@ def revision(city_name, text,y,text_1,color= "#096C82"):
     text_2 = m_api.text(data1)
     temp1 = data1["main"]
     temp2 = m_api.temp(temp1["temp"])
+    x_temp=19
+    # print(x_temp)
+    if len(temp2)==1:
+        x_temp=19*2
+    if len(temp2)==3:
+        x_temp=0
     temp3 = m_api.temp(temp1["temp_min"])
     temp4 = m_api.temp(temp1["temp_max"])
     label = ctk.CTkButton(master=m_data.screen,width=236,height=101,text="",border_color="#FFFFFF",bg_color="#096C82",fg_color=color,corner_radius=20,border_width=2,hover=False,)
@@ -22,11 +29,19 @@ def revision(city_name, text,y,text_1,color= "#096C82"):
     text1 = ct_text.Text(text=text,x=14+19,y=y+8,height=31,width=56,size=16,fg_color=color)
     text2 = ct_text.Text(text=text_1,x=14+19,y=y+33,height=31,width=56,size=12,fg_color =color)
     text3 = ct_text.Text(text=text_2,x=14+19,y=y+76,height=0,width=56,size=12,fg_color=color)
-    text4 = ct_text.Text(text=temp2+"⁰",x=158+19,y=y+12,height=0,width=56,size=50,fg_color=color)
-    text5 = ct_text.Text(text=f"макс.: {temp4}⁰, мин.: {temp3}⁰",x=122+19,y=y+76,height=0,width=56,size=12,fg_color=color)
+    x_temp2=0
+    text4 = ct_text.Text(text=temp2+"⁰",x=158+x_temp,y=y+12,height=0,width=0,size=50,fg_color=color)
+    if len(f"макс.: {temp4}⁰, мин.: {temp3}⁰")>21:
+        x_temp2+=-(len(f"макс.: {temp4}⁰, мин.: {temp3}⁰")-20)*5
+    print(f"макс.: {temp4}⁰, мин.: {temp3}⁰",len(f"макс.: {temp4}⁰, мин.: {temp3}⁰"),x_temp2)
+    text5 = ct_text.Text(text=f"макс.: {temp4}⁰, мин.: {temp3}⁰",x=122+19+x_temp2,y=y+76,height=0,width=0,size=12,fg_color=color)
 def time1(text1,number,image,x,count = 0):
-    # data= m_api.get_api()
-    data= m_data.dict_api[m_data.city]      
+    threading.Thread(target=time_2,args=[text1,number,image,x,count],daemon=True).start()
+def time_2(text1,number,image,x,count = 0):
+    # time.localtime()[3]
+    data= m_api.get_api(add=f"&cnt={(time.localtime()[3]+count)%24}")
+    print(data)
+    # data= m_data.dict_api[m_data.city]      
     sunset=m_api.time1(data,sun="set")
     sunrise=m_api.time1(data,sun="rise")
     img=m_api.image(data)
@@ -46,7 +61,7 @@ def time1(text1,number,image,x,count = 0):
     image = ctk.CTkLabel(master=m_data.screen,width=50,height=52.08,text="",text_color="#FFFFFF",bg_color="#5DA7B1",fg_color="#5DA7B1",image = image)
     image.place(x = x+325 ,y = 104+430)
     text4 = ct_text.Text(text=text1,x=x + 325,y=54 + 430,height=31,width=56,size=18)
-    text8 = ct_text.Text(text=f"{number}⁰",x=325 + 7+x,y=173+430,height=30,width=41.02,size=30)
+    text8 = ct_text.Text(text=f"{m_api.temp(data['main']['temp'])}⁰",x=325 +x,y=173+430,height=30,width=41.02,size=30)
 def delete():
     m_data.width = 460
     m_data.height  = 645
@@ -89,7 +104,7 @@ def create():
     time_now2 = f"{time.localtime()[3]-2}:{time.localtime()[4]}"
     time_now3 = f"{time.localtime()[3]+1}:{time.localtime()[4]}"
     time_now4 =  f"{time.localtime()[3]+2}:{time.localtime()[4]}"
-    if time.localtime()[4]<10:
+    if time_now3==time.localtime()[4]<10:
         time_now4 =  f"{time.localtime()[3]+2}:0{time.localtime()[4]}"
         time_now1 = f"{time.localtime()[3]-1}:0{time.localtime()[4]}"
         time_now2 = f"{time.localtime()[3]-2}:0{time.localtime()[4]}"
@@ -135,7 +150,7 @@ def create():
     # transparent
     time1("Зараз",f"{temp}","cloudy",19)
     
-
+    
     time1("15:00","12","sun",112,1)
     time1("16:00","10","sun",204,1+1)
     time1("16:05","9","sunset",296,2+1)
@@ -205,13 +220,13 @@ def create():
     text3 = ct_text.Text(f"{temp}⁰",683,203,71,79,80)
 
     text4 = ct_text.Text(text="Зараз",x=19 + 325,y=54 + 430,height=31,width=56,size=18)
-    text5 = ct_text.Text(text=m_api.text(data),x=663,y=284,height=37,width=140,size=30)
+    text5 = ct_text.Text(text=m_api.text(data),x=675,y=284,height=37,width=140,size=30)
     # text6  = ct_text.Text(text="з проясненнями",x=663,y=321,height=16,width=140,size=16)
     text7 = ct_text.Text(text=f"↓{min_temp}⁰",x=673.43,y=345,height=27,width=19.48,size=30)
-    
-    
-
-    text9 = ct_text.Text(text=f"↑{max_temp}⁰",x=738.03,y=345,height=27,width=30.76,size=30)
+    x_temp_3 = 0
+    if len(min_temp)==3:
+        x_temp_3 = 19
+    text9 = ct_text.Text(text=f"↑{max_temp}⁰",x=738.03+x_temp_3,y=345,height=27,width=30.76,size=30)
 
     text10 = ct_text.Text(text=text +".",x=346,y=445,height=31,width=776,size=14)
     day = time.localtime()[-3]
