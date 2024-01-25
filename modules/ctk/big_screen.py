@@ -9,6 +9,8 @@ import modules.ctk.registration as ct_reg
 import time
 import modules.api as m_api
 import threading
+import io
+import requests
 # print(time.)
 
 def revision(city_name, text,y,text_1,color= "#096C82"):
@@ -35,16 +37,31 @@ def revision(city_name, text,y,text_1,color= "#096C82"):
         x_temp2+=-(len(f"макс.: {temp4}⁰, мин.: {temp3}⁰")-20)*5
     print(f"макс.: {temp4}⁰, мин.: {temp3}⁰",len(f"макс.: {temp4}⁰, мин.: {temp3}⁰"),x_temp2)
     text5 = ct_text.Text(text=f"макс.: {temp4}⁰, мин.: {temp3}⁰",x=122+19+x_temp2,y=y+76,height=0,width=0,size=12,fg_color=color)
-def time1(text1,number,image,x,count = 0):
-    threading.Thread(target=time_2,args=[text1,number,image,x,count],daemon=True).start()
-def time_2(text1,number,image,x,count = 0):
+def time1(text1,number,image,x,count = 0,data = None):
+    threading.Thread(target=time_2,args=[text1,number,image,x,count,data],daemon=True).start()
+def time_2(text1,number,image,x,count = 0,data = None):
     # time.localtime()[3]
-    data= m_api.get_api(add=f"&cnt={(time.localtime()[3]+count)%24}")
-    print(data)
+    hour = (count + time.localtime()[3])%24
+    day = (count + time.localtime()[3])//24
+    print(hour)
+    print(day)
+    data = data["forecast"]["forecastday"][day]
+    astro = data["astro"]
+    hour_rise = astro["sunrise"].split(" ")
+    if hour_rise[1]== "PM":
+        hour_rise[0] = int(hour_rise[0].split(":")[0])+12
+    hour_rise=hour_rise[0]
+
+    hour_set = astro["sunset"].split(" ")
+    if hour_set[1]== "PM":
+        hour_set[0] = int(hour_set[0].split(":")[0])+12
+    hour_set=hour_set[0]
+    data_2 = m_data.dict_api[m_data.city]
+    # print(data)
     # data= m_data.dict_api[m_data.city]      
-    sunset=m_api.time1(data,sun="set")
-    sunrise=m_api.time1(data,sun="rise")
-    img=m_api.image(data)
+    sunset=m_api.time1(data_2,sun="set")
+    sunrise=m_api.time1(data_2,sun="rise")
+    # img=m_api.image(data)
     if count != 0:
         hour=time.localtime()[3]
         
@@ -56,12 +73,15 @@ def time_2(text1,number,image,x,count = 0):
             img="sunrise_2412802"
         else:
             text1 = str((hour+count)%24)+":00"
-    image = Image.open(os.path.abspath(__file__+f"/../../../images/{img}.png"))
+    # data= m_api.get_api_2()
+    url=requests.get("https:"+data['hour'][hour]["condition"]["icon"])#аштитипс
+    # os.path.abspath(__file__+f"/../../../images/{img}.png")
+    image = Image.open(io.BytesIO(url.content))
     image = ctk.CTkImage(dark_image=image,size=(54,50))
     image = ctk.CTkLabel(master=m_data.screen,width=50,height=52.08,text="",text_color="#FFFFFF",bg_color="#5DA7B1",fg_color="#5DA7B1",image = image)
     image.place(x = x+325 ,y = 104+430)
     text4 = ct_text.Text(text=text1,x=x + 325,y=54 + 430,height=31,width=56,size=18)
-    text8 = ct_text.Text(text=f"{m_api.temp(data['main']['temp'])}⁰",x=325 +x,y=173+430,height=30,width=41.02,size=30)
+    text8 = ct_text.Text(text=f"{int(data['hour'][hour]['temp_c'])}⁰",x=325 +x,y=173+430,height=30,width=41.02,size=30)
 def delete():
     m_data.width = 460
     m_data.height  = 645
@@ -148,17 +168,17 @@ def create():
     button = ctk.CTkButton(master=m_data.screen,width=0,height=0,text="",image=image,fg_color="#096C82",command=check,bg_color = "#096C82",hover =False)
     button.place(x=1075+14,y=28+10)
     # transparent
-    time1("Зараз",f"{temp}","cloudy",19)
     
-    
-    time1("15:00","12","sun",112,1)
-    time1("16:00","10","sun",204,1+1)
-    time1("16:05","9","sunset",296,2+1)
-    time1("17:00","8","moon",388,3+1)
-    time1("18:00","8","moon",480,4+1)
-    time1("19:00","7","rain_moon",572,5+1)
-    time1("20:00","5","rain_moon",664,6+1)
-    time1("21:00","5","rain_moon",756,7+1)
+    data1= m_api.get_api_2()
+    time1("Зараз",f"{temp}","cloudy",19,0,data1)
+    time1("15:00","12","sun",112,1,data1)
+    time1("16:00","10","sun",204,1+1,data1)
+    time1("16:05","9","sunset",296,2+1,data1)
+    time1("17:00","8","moon",388,3+1,data1)
+    time1("18:00","8","moon",480,4+1,data1)
+    time1("19:00","7","rain_moon",572,5+1,data1)
+    time1("20:00","5","rain_moon",664,6+1,data1)
+    time1("21:00","5","rain_moon",756,7+1,data1)
     # range
     # count = 
     sunset=m_api.time1(data=data)

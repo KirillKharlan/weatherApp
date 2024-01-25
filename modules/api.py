@@ -130,3 +130,20 @@ def get_api(city_name = None,add=""):
         print("Error response",city_name)
         print(response)
         return response.status_code
+# 71e3b6535e7a4a359b2124944242401
+# http://api.weatherapi.com/v1/forecast.json?key={key_API}&q={city}&days=2&aqi=no&alerts=no
+def get_api_2(city_name=None):
+    if city_name == None:
+        city_name = m_data.city
+    url_api=f"http://api.weatherapi.com/v1/forecast.json?key=71e3b6535e7a4a359b2124944242401&q={city_name}&days=2&aqi=no&alerts=no"
+    response=requests.get(url = url_api)
+    if response.status_code == 200:
+        data = response.json()
+        #time1(data)
+        #print (time1(data))
+        # time1(data,"rise")
+        return data
+    else:
+        print("Error response",city_name)
+        print(response)
+        return response.status_code
