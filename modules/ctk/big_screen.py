@@ -47,36 +47,55 @@ def time_2(text1,number,image,x,count = 0,data = None):
     print(day)
     data = data["forecast"]["forecastday"][day]
     astro = data["astro"]
-    hour_rise = astro["sunrise"].split(" ")
-    if hour_rise[1]== "PM":
-        hour_rise[0] = int(hour_rise[0].split(":")[0])+12
-    hour_rise=hour_rise[0]
+    hour_rise = astro["sunrise"]# a kakaya togda 
+    hour_rise=m_api.time_2(hour_rise)#ті функции говорил
 
-    hour_set = astro["sunset"].split(" ")
-    if hour_set[1]== "PM":
-        hour_set[0] = int(hour_set[0].split(":")[0])+12
-    hour_set=hour_set[0]
+    hour_set = astro["sunset"]
+    hour_set=m_api.time_2(hour_set)
+    
+    moon_set = astro["moonset"]
+    moon_set = m_api.time_2(moon_set)
+    
+    moon_rise = astro["moonrise"]
+    moon_rise =  m_api.time_2(moon_rise)
+    print(hour_rise,132)
     data_2 = m_data.dict_api[m_data.city]
     # print(data)
     # data= m_data.dict_api[m_data.city]      
     sunset=m_api.time1(data_2,sun="set")
     sunrise=m_api.time1(data_2,sun="rise")
     # img=m_api.image(data)
-    if count != 0:
-        hour=time.localtime()[3]
-        
-        if str((hour+count)%24)==sunset["hour"]:
-            text1 = sunset["hour"]+":"+sunset["minute"]
-            img="sunset_2412806"
-        elif str((hour+count)%24)==sunrise["hour"]:
-            text1 = sunrise["hour"]+":"+sunrise["minute"]
-            img="sunrise_2412802"
-        else:
-            text1 = str((hour+count)%24)+":00"
+    func=lambda t:str(t) if len(str(t))==2 else str(0)+str(t)
+
+    img=io.BytesIO(requests.get("https:"+data['hour'][hour]["condition"]["icon"]).content)#аштитипс
+    # hour = hour_rise[0]
+    # if hour == moon_rise[0]:
+        # text1 = f"{func(moon_rise[0])}:00"
+    # elif hour==moon_set[0]:
+        # text1 = f"{func(moon_set[0])}:00"
+    if hour==hour_set[0]:
+        text1=":".join(hour_set)
+        img = os.path.abspath(__file__  + "/../../../images/sunset_2412806.png")
+    elif hour==hour_rise[0]:
+        text1= ":".join(hour_rise)
+        img = os.path.abspath(__file__  + "/../../../images/sunrise_2412802.png")
+    else:
+        text1=f"{func(hour)}:00"
+    if count == 0:
+        text1="Зараз"
+    #     if str((hour+count)%24)==sunset["hour"]:
+    #         text1 = sunset["hour"]+":"+sunset["minute"]
+    #         img="sunset_2412806"
+    #     elif str((hour+count)%24)==sunrise["hour"]:
+    #         text1 = sunrise["hour"]+":"+sunrise["minute"]
+    #         img="sunrise_2412802"
+    #     else:
+    #         text1 = str((hour+count)%24)+":00"
     # data= m_api.get_api_2()
-    url=requests.get("https:"+data['hour'][hour]["condition"]["icon"])#аштитипс
+   
     # os.path.abspath(__file__+f"/../../../images/{img}.png")
-    image = Image.open(io.BytesIO(url.content))
+    print(text1)
+    image = Image.open(img)
     image = ctk.CTkImage(dark_image=image,size=(54,50))
     image = ctk.CTkLabel(master=m_data.screen,width=50,height=52.08,text="",text_color="#FFFFFF",bg_color="#5DA7B1",fg_color="#5DA7B1",image = image)
     image.place(x = x+325 ,y = 104+430)
@@ -180,25 +199,35 @@ def create():
     time1("20:00","5","rain_moon",664,6+1,data1)
     time1("21:00","5","rain_moon",756,7+1,data1)
     # range
+    # str(sun)+str(" сонця о ")+str(hour)+":"+str(minute)
+    astro = data1["forecast"]["forecastday"][0]["astro"]
+    # astro = data1
+    hour_rise = astro["sunrise"]# a kakaya togda 
+    hour_rise=":".join(m_api.time_2(hour_rise))#ті функции говорил
+
+    hour_set = astro["sunset"]
+    hour_set=":".join(m_api.time_2(hour_set))
+    text=f"Захід сонця о {hour_set}; Світанок сонця о {hour_rise}"
+
     # count = 
-    sunset=m_api.time1(data=data)
-    sunrise = m_api.time1(data=data,sun="rise")
-    if sunset["day"]< sunrise["day"]:
-        text = sunset["text"]
-    elif sunset["day"]> sunrise["day"]:
-        text = sunrise["text"]
-    else:
-        if sunset["hour"]< sunrise["hour"]:
-            text = sunset["text"]
-        elif sunset["hour"]> sunrise["hour"]:
-            text = sunrise["text"]
-        else:
-            if sunset["minute"]> sunrise["minute"]:
-                text = sunrise["text"]
-            elif sunrise["minute"]> sunset["minute"]:
-                text = sunset["text"]
-            else:
-                text = sunset["text"]
+    # sunset=m_api.time1(data=data)
+    # sunrise = m_api.time1(data=data,sun="rise")
+    # if sunset["day"]< sunrise["day"]:
+    #     text = sunset["text"]
+    # elif sunset["day"]> sunrise["day"]:
+    #     text = sunrise["text"]
+    # else:
+    #     if sunset["hour"]< sunrise["hour"]:
+    #         text = sunset["text"]
+    #     elif sunset["hour"]> sunrise["hour"]:
+    #         text = sunrise["text"]
+    #     else:
+    #         if sunset["minute"]> sunrise["minute"]:
+    #             text = sunrise["text"]
+    #         elif sunrise["minute"]> sunset["minute"]:
+    #             text = sunset["text"]
+    #         else:
+                # text = sunset["text"
     # if sunset["hour"]<sunrise["hour"]:
     #     text = sunset["text"]
     #     if sunset["day"]-1:

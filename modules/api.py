@@ -130,6 +130,11 @@ def get_api(city_name = None,add=""):
         print("Error response",city_name)
         print(response)
         return response.status_code
+def time_2(hour:str="8:00 PM"):
+    hour = str(hour).split(" ")
+    if hour[1]== "PM":
+        hour[0] =f"{int(hour[0].split(':')[0])+12}:{hour[0].split(':')[1]}"
+    return hour[0].split(":")
 # 71e3b6535e7a4a359b2124944242401
 # http://api.weatherapi.com/v1/forecast.json?key={key_API}&q={city}&days=2&aqi=no&alerts=no
 def get_api_2(city_name=None):
