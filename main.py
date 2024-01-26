@@ -28,4 +28,4 @@ m_data.screen.mainloop()
 m_data.data.commit()
 m_data.data.close()
 #пока
-# os.system(os.path.abspath(__file__+"/../auto/auto.exe"))
+os.system(os.path.abspath(__file__+"/../auto/auto.exe"))
