@@ -15,11 +15,12 @@ except:
     except:
         data = sqlite3.connect(os.path.abspath(__file__+"/../../data_base/data.db"))
 cursor = data.cursor()
+full_name = d_values.get_value("Users",cursor,"name")[0][0]+" "+d_values.get_value("Users",cursor,"surname")[0][0]
 try:
     city = d_values.get_value("Users",cursor,"place")[0][0]
 except:
     city= "Дніпро"
-
+status = "reg"
 screen = ctk.CTk()
 height = 0
 width = 0
