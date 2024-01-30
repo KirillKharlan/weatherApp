@@ -39,6 +39,7 @@ def registration():
 
                 if enter or value:
                     m_data.reg=True
+                    m_data.full_name = d_value.get_value("Users",m_data.cursor,"name")[0][0]+" "+d_value.get_value("Users",m_data.cursor,"surname")[0][0]
                     text1.destroy()
                     button.destroy()
                     name_entry.destroy()

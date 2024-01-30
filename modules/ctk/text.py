@@ -1,7 +1,9 @@
 import customtkinter as ctk
 import modules.data_base as m_data
 class Text:
-    def __init__(self,text,x,y,height,width,size,master =m_data.screen,fg_color ="#5DA7B1"):
+    def __init__(self,text,x,y,height,width,size,master =None,fg_color ="#5DA7B1"):
+        if master==None:
+            master=m_data.screen
         self.TEXT=text
         self.X=x
         self.Y=y

@@ -26,6 +26,9 @@ ctk_rg.registration()
 #понятно, пока C:\Users\epi99\OneDrive\workTable
 m_data.screen.mainloop()
 m_data.data.commit()
-m_data.data.close()
 #пока
-os.system(os.path.abspath(__file__+"/../auto/auto.exe"))
+# os.system(os.path.abspath(__file__+"/../auto/auto.exe"))
+m_data.status = "mini"
+m_data.screen = customtkinter.CTk()
+import auto
+m_data.data.close()
