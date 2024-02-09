@@ -9,18 +9,20 @@ import os
 import modules.ctk.registration as m_reg
 import modules.ctk.big_screen as ct_bg
 # m_data.screen.geometry(f"{m_data.width}x{m_data.height}+{m_data.screen.winfo_screenwidth()//2-m_data.width//2}+{m_data.screen.winfo_screenheight()//2-m_data.width//2}")
-img = ctk.CTkImage(dark_image=Image.open(os.path.abspath(__file__ +"/../../../images/left-arrow_10559390.png")))
+
 def create():
     global text1,exit,text6,text7,text8,text9,button,text10
+    m_data.status = "start"
     m_data.screen.title("Особистий кабінет")
 
 
     font = ctk.CTkFont(family=m_data.path,size=28,weight=("bold"))
 
     text1 = ctk.CTkLabel(font=font,master=m_data.screen,width=380,height=55,text="Особисий кабінет",text_color="#FFFFFF",bg_color="#5DA7B1",fg_color="#5DA7B1")
+
     text1.place(x = 38,y = 42)
 
-
+    img = ctk.CTkImage(dark_image=Image.open(os.path.abspath(__file__ +"/../../../images/left-arrow_10559390.png")))
 
     exit = ctk.CTkButton(command= delete,master=m_data.screen,image=img,width= 28,height= 29,text="",bg_color="#5DA7B1",fg_color="#5DA7B1",hover=False)
     exit.place(x = 409,y = 20)

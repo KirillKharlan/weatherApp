@@ -72,6 +72,128 @@ def image(data):
     else:
         name = "snowy_2412766"
     return name
+<<<<<<< HEAD
+=======
+def image_2(data,day,hour):
+    # try:
+        icon=str(data["forecast"]["forecastday"][int(day)]["hour"][hour]["condition"]["icon"])
+        count=icon.split("/")[-1].split(".")[0]
+        time_3=icon.split("/")[-2]
+        print(count,time_3,-142)
+        day_dict = {
+            "113":'sun_2412787',
+            "116":"sunny_2412794",
+            "119":"sunny_2412798",
+            "122":"sunny_2412798",
+            "143":"sunny_2412798",
+            "176":"rainy_2412747",
+            "179":"snowy_2412767",
+            "182":"snowy_2412768",
+            "182":"snowy_2412768",
+            "185":"snowy_2412766",
+            "200":"storm_2412772",
+            "227":"snowy_2412766",
+            "230":"snowy_2412766",
+            "248":"snowy_2412768",
+            "260":"snowy_24127681",
+            "263":"rainy_2412747",
+            "266":"rainy_2412747",
+            "281":"snowy_2412766",
+            "284":"snowy_2412766",
+            "293":"rainy_2412747",
+            "296":"rainy_2412747",
+            "299":"rainy_2412747",
+            "302":"rainy_2412747",
+            "305":"rainy_2412747",
+            "308":"rainy_2412747",
+            "311":"snowy_2412768",
+            "314":"snowy_2412768",
+            "317":"snowy_2412768",
+            "320":"snowy_2412768",
+            "323":"snowy_2412768",
+            "326":"snowy_2412768",
+            "329":"snowy_2412768",
+            "332":"snowy_2412768",
+            "335":"snowy_2412768",
+            "338":"snowy_2412768",
+            "350":"snowy_2412768",
+            "353":"rainy_2412747",
+            "356":"rainy_2412747",
+            "359":"rainy_2412747",
+            "362":"rainy_2412747",
+            "365":"snowy_2412768",
+            "368":"snowy_2412768",
+            "371":"snowy_2412768",
+            "374":"snowy_2412768",
+            "377":"snowy_2412768",
+            "386":"storm_2412772",
+            "389":"storm_2412772",
+            "392":"storm_2412772",
+            "395":"storm_2412772",
+        }
+
+        # snowy_2412767
+        night_dict = {
+            "113":'moon_2412729',
+            "116":"moon_2412729",
+            "119":"moon_2412729",
+            "122":"moon_2412729",
+            "143":"moon_2412729",
+            "176":"rain_2412733",
+            "179":"snowy_2412767",
+            "182":"snowy_2412767",
+            "182":"snowy_2412767",
+            "185":"snowy_2412766",
+            "200":"storm_2412772",
+            "227":"snowy_2412766",
+            "230":"snowy_2412766",
+            "248":"drizzle_2412691",
+            "260":"drizzle_2412691",
+            "263":"rain_2412733",
+            "266":"rain_2412733",
+            "281":"snowy_2412766",
+            "284":"snowy_2412766",
+            "293":"rain_2412733",
+            "296":"rain_2412733",
+            "299":"rain_2412733",
+            "302":"rain_2412733",
+            "305":"rain_2412733",
+            "308":"rain_2412733",
+            "311":"snowy_2412767",
+            "314":"snowy_2412767",
+            "317":"snowy_2412767",
+            "320":"snowy_2412767",
+            "323":"snowy_2412767",
+            "326":"snowy_2412767",
+            "329":"snowy_2412767",
+            "332":"snowy_2412767",
+            "335":"snowy_2412767",
+            "338":"snowy_2412767",
+            "350":"snowy_2412767",
+            "353":"rain_2412733",
+            "356":"rain_2412733",
+            "359":"rain_2412733",
+            "362":"rain_2412733",
+            "365":"snowy_2412767",
+            "368":"snowy_2412767",
+            "371":"snowy_2412767",
+            "374":"snowy_2412767",
+            "377":"snowy_2412767",
+            "386":"storm_2412772",
+            "389":"storm_2412772",
+            "392":"storm_2412772",
+            "395":"storm_2412772",
+        }
+        path= os.path.abspath(__file__+"/../../images/")
+        if time_3 == "day":
+            return os.path.abspath(__file__+"/../../images/"+day_dict[count] + ".png")
+        elif time_3 == "night":
+            return os.path.abspath(__file__+"/../../images/"+night_dict[count] + ".png")
+        # else:
+            # return io.BytesIO(requests.get("https:"+ icon).content)
+        return io.BytesIO(requests.get("https:"+ icon).content)
+    # except:
+>>>>>>> 579580f3f08fe1ef9ae590b46eee13a42c896ee5
     #if name == "snow"
 def time1(data:dict,sun = "set"):
     time3 = time.localtime()
